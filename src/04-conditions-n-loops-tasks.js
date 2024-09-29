@@ -129,8 +129,25 @@ function isTriangle(a, b, c) {
  *   { top:20, left:20, width: 20, height: 20 }    =>  false
  *
  */
-function doRectanglesOverlap(/* rect1, rect2 */) {
-  throw new Error('Not implemented');
+function doRectanglesOverlap(rect1, rect2) {
+  const leftSideR1X = rect1.left;
+  const rightSideR1X = rect1.left + rect1.width;
+  const topSideR1Y = rect1.top;
+  const bottomSideR1Y = rect1.top + rect1.height;
+
+  const leftSideR2X = rect2.left;
+  const rightSideR2X = rect2.left + rect2.width;
+  const topSideR2Y = rect2.top;
+  const bottomSideR2Y = rect2.top + rect2.height;
+
+  if ((leftSideR1X > rightSideR2X)
+    || (leftSideR2X > rightSideR1X)
+    || (topSideR1Y > bottomSideR2Y)
+    || (topSideR2Y > bottomSideR1Y)) {
+    return false;
+  }
+
+  return true;
 }
 
 
@@ -366,8 +383,24 @@ function getDigitalRoot(num) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const brackets = {
+    '{': '}',
+    '[': ']',
+    '(': ')',
+    '<': '>',
+  };
+  const arr = [];
+
+  for (let i = 0; i < str.length; i += 1) {
+    if ((arr.length !== 0) && (str[i] === brackets[arr.at(-1)])) {
+      arr.pop();
+    } else {
+      arr.push(str[i]);
+    }
+  }
+
+  return (arr.length === 0);
 }
 
 
@@ -391,8 +424,8 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return num.toString(n);
 }
 
 
@@ -408,8 +441,26 @@ function toNaryString(/* num, n */) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  pathes.sort((a, b) => a.length - b.length);
+  let firstPath = pathes[0];
+  let path = '';
+
+  for (let i = 1; i < pathes.length; i += 1) {
+    path = '';
+    for (let j = 0; j < firstPath.length; j += 1) {
+      if (firstPath[j] === pathes[i][j]) {
+        path += firstPath[j];
+      } else {
+        firstPath = path;
+        break;
+      }
+    }
+  }
+
+  const lastIndexSlesh = path.lastIndexOf('/');
+
+  return path.slice(0, (lastIndexSlesh + 1));
 }
 
 
@@ -431,8 +482,29 @@ function getCommonDirectoryPath(/* pathes */) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const resultMatrix = [];
+  const count = m1.length * m2[0].length;
+  const div = m2[0].length;
+  const row = [];
+  let sumOfProd = 0;
+
+  for (let i = 0; i < count; i += 1) {
+    const rowNum = Math.floor(i / div);
+    const colNum = i % div;
+
+    for (let j = 0; j < m2.length; j += 1) {
+      sumOfProd += m1[rowNum][j] * m2[j][colNum];
+    }
+    row.push(sumOfProd);
+    sumOfProd = 0;
+
+    if (((i + 1) % div) === 0) {
+      resultMatrix.push(row.splice(0, row.length));
+    }
+  }
+
+  return resultMatrix;
 }
 
 
