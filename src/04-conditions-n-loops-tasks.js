@@ -516,7 +516,7 @@ function getMatrixProduct(m1, m2) {
  * Function should return who is winner in the current position according to the game rules.
  * The result can be: 'X','0',undefined
  *
- * @param {array} position
+ * @param {array} pstn
  * @return {string}
  *
  * @example
@@ -538,8 +538,26 @@ function getMatrixProduct(m1, m2) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(pstn) {
+  for (let i = 0; i <= 2; i += 1) {
+    if (pstn[i][0] === pstn[i][1] && pstn[i][1] === pstn[i][2] && pstn[i][2] !== undefined) {
+      return pstn[i][0];
+    }
+
+    if (pstn[0][i] === pstn[1][i] && pstn[1][i] === pstn[2][i] && pstn[2][i] !== undefined) {
+      return pstn[0][i];
+    }
+  }
+
+  if (pstn[0][0] === pstn[1][1] && pstn[1][1] === pstn[2][2] && pstn[2][2] !== undefined) {
+    return pstn[0][0];
+  }
+
+  if (pstn[0][2] === pstn[1][1] && pstn[1][1] === pstn[2][0] && pstn[0][2] !== undefined) {
+    return pstn[0][2];
+  }
+
+  return undefined;
 }
 
 
